@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CIE1_C</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="cities">
+        <item>Ahemdabad</item>
+        <item>Surat</item>
+        <item>Navsari</item>
+        <item>Valsad</item>
+        <item>Bharuch</item>
+    </string-array>
+</resources>
