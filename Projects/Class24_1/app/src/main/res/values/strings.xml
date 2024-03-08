@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Controls</string>
+    <string-array name="cities">
+        <item>Surat</item>
+        <item>bardoli</item>
+        <item>ANC</item>
+    </string-array>
+</resources>

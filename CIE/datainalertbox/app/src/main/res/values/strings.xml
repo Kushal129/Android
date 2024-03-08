@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DatainAlertbox</string>
+    <string-array name="spCity">
+        <item>Surat</item>
+        <item>Baroda</item>
+        <item>Bharuch</item>
+        <item>Dubai</item>
+        <item>Goa</item>
+    </string-array>
+</resources>
