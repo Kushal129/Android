@@ -1,289 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
-xmlns:android="http://schemas.android.com/apk/res/android"
- xmlns:app="http://schemas.android.com/apk/res-auto"
- xmlns:tools="http://schemas.android.com/tools"
- android:id="@+id/main"
- android:layout_width="match_parent"
- android:layout_height="match_parent"
- tools:context=".IntentExample">
- <TextView
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Explicit Intent Example"
- android:textSize="30dp"
- android:textStyle="bold"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.495"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.023" />
- <Button
- android:id="@+id/btnExplicit"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Explicit Intent"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.081" />
- <Button
- android:id="@+id/btnCall"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Make Call"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.513"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.489" />
- <Button
- android:id="@+id/btnDialer"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Open Dialer"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.512"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.418" />
-
-<Button
- android:id="@+id/btnContact"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Show Contacts"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.576"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.699" />
- <Button
- android:id="@+id/btnSMS"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Send SMS"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.505"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.349" />
- <TextView
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Implicit Intent Example"
- android:textSize="30dp"
- android:textStyle="bold"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.54"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.218" />
- <Button
- android:id="@+id/btnContactDetails"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Show Contact Details"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.515"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.77" />
- <Button
- android:id="@+id/btnCallLog"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Show Call Log"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.52"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.84" />
-
-<Button
- android:id="@+id/btnEmail"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Send Email"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.513"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.279" />
- <Button
- android:id="@+id/btnMap"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Open Map"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.548"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.629" />
- <Button
- android:id="@+id/btnURL"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Open URL"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent"
- app:layout_constraintHorizontal_bias="0.526"
- app:layout_constraintStart_toStartOf="parent"
- app:layout_constraintTop_toTopOf="parent"
- app:layout_constraintVertical_bias="0.559" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-______ javaaaa _____
-
-
-public class IntentExample extends AppCompatActivity {
- Button btnExplicit, btnCall, btnDialer, btnContact, btnSMS, 
-btnContactDetails, btnCallLog, btnEmail, btnMap, btnURL;
- @Override
- protected void onCreate(Bundle savedInstanceState) {
- super.onCreate(savedInstanceState);
- EdgeToEdge.enable(this);
- setContentView(R.layout.activity_intent_example);
- ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), 
-(v, insets) -> {
- Insets systemBars = 
-insets.getInsets(WindowInsetsCompat.Type.systemBars());
- v.setPadding(systemBars.left, systemBars.top, systemBars.right, 
-systemBars.bottom);
- return insets;
- });
- controlInitialization();
- buttonClicks();
- }
- protected void controlInitialization() {
- btnExplicit = findViewById(R.id.btnExplicit);
- btnCall = findViewById(R.id.btnCall);
- btnDialer = findViewById(R.id.btnDialer);
- btnMap = findViewById(R.id.btnMap);
- btnURL = findViewById(R.id.btnURL);
- btnContact = findViewById(R.id.btnContact);
- btnSMS = findViewById(R.id.btnSMS);
- btnContactDetails = findViewById(R.id.btnContactDetails);
- btnCallLog = findViewById(R.id.btnCallLog);
- btnEmail = findViewById(R.id.btnEmail);
- }
- protected void buttonClicks() {
- // Explicit Intent
- btnExplicit.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objExplicit = new Intent(getApplicationContext(), 
-MainActivity.class);
- startActivity(objExplicit);
- }
- });
- // Open Map
- btnMap.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objMap = new Intent(Intent.ACTION_VIEW, 
-Uri.parse("geo:21.0678313,73.128108"));
- startActivity(objMap);
- }
- });
- // Open URL
- btnURL.setOnClickListener(new View.OnClickListener() {
+package com.example.firstapp;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+public class ImplicitIntentActivity extends AppCompatActivity {
+Button btnDial, btnMakeCall, btnOpenBrowser, btnCheckLogin;
+TextView lblUserName;
 @Override
- public void onClick(View v) {
- Intent objURL = new Intent(Intent.ACTION_VIEW, 
-Uri.parse("https://www.google.com"));
- startActivity(objURL);
- }
- });
- // Open Dialer
- btnDialer.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objDialer = new Intent(Intent.ACTION_DIAL, 
-Uri.parse("tel:9876543210"));
- startActivity(objDialer);
- }
- });
- //Make Phone Call
- btnCall.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- if (ActivityCompat.checkSelfPermission(IntentExample.this, 
-android.Manifest.permission.CALL_PHONE) != 
-PackageManager.PERMISSION_GRANTED) {
- ActivityCompat.requestPermissions(IntentExample.this, 
-new String[]{android.Manifest.permission.CALL_PHONE}, 0 );
- }
- Intent objCall = new Intent(Intent.ACTION_CALL, 
-Uri.parse("tel:9876543210"));
- startActivity(objCall);
- }
- });
- // Open Contact Details
- btnContactDetails.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objContact = new Intent(Intent.ACTION_VIEW, 
-Uri.parse("content://contacts/people/1"));
- startActivity(objContact);
- }
- });
- //Open Contacts
- btnContact.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objContactDetails = new Intent(Intent.ACTION_VIEW, 
-Uri.parse("content://contacts/people/"));
- startActivity(objContactDetails);
- }
- });
- //Show Call Log
- btnCallLog.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objCallLog = new Intent(Intent.ACTION_VIEW,
-Uri.parse("content://call_log/calls/"));
- startActivity(objCallLog);
- }
- });
- //Send SMS
- btnSMS.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objSMS = new Intent(Intent.ACTION_SENDTO);
- objSMS.putExtra("address", "1236547892");
- objSMS.putExtra("sms_body", "Sample Message");
- objSMS.setData(Uri.parse("smsto:"));
- startActivity(objSMS);
- }
- });
- //Send Email
- btnEmail.setOnClickListener(new View.OnClickListener() {
- @Override
- public void onClick(View v) {
- Intent objEmail = new Intent(Intent.ACTION_SEND);
- objEmail.putExtra(Intent.EXTRA_EMAIL, new 
-String[]{"21bmiit137@gmail.com"});
- objEmail.putExtra(Intent.EXTRA_SUBJECT, "Demo Email");
- objEmail.putExtra(Intent.EXTRA_TEXT, "Hello, It is Demo 
-Email");
- objEmail.setType("message/rfc822");
- startActivity(objEmail);
- }
- });
- }
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_implicit_intent);
+//runtime permission declared in manifest file
+if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
+{
+ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},0);
+}
+ControlInitialization();
+ButtonCLicks();
+}
+private void ControlInitialization()
+{
+btnDial = findViewById(R.id.btnDial);
+btnMakeCall = findViewById(R.id.btnMakeCall);
+btnOpenBrowser = findViewById(R.id.btnOpenBrowser);
+btnCheckLogin = findViewById(R.id.btnCheckLogin);
+lblUserName = findViewById(R.id.lblUserName);
+}
+private void ButtonCLicks()
+{
+btnDial.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+Intent objIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:634536437"));
+startActivity(objIntent);
+}
+});
+
+
+btnMakeCall.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+Intent objIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:9904599931"));
+startActivity(objIntent);
+}
+});
+btnOpenBrowser.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+//Open URL In browser
+/* Intent objIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+startActivity(objIntent);*/
+//Open Map
+/* Intent objIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:21.0682849,73.1307517"));
+startActivity(objIntent);*/
+//Display Contact List
+//All the contacts - content://contacts/people/
+// Contact Details - content://contacts/people/1
+/* Intent objIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("content://contacts/people/"));
+startActivity(objIntent);*/
+//call logs
+/*Intent objIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("content://call_log/calls"));
+startActivity(objIntent);*/
+//send SMS
+/* Intent objIntent = new Intent(Intent.ACTION_SENDTO);
+objIntent.putExtra("address","9904599931");
+objIntent.putExtra("sms_body","Hello...Good Morning");
+objIntent.setData(Uri.parse("smsto:"));
+startActivity(objIntent);*/
+//send Email
+/* Intent objIntent = new Intent(Intent.ACTION_SEND);
+objIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"jigna.solanki@utu.ac.in"});
+objIntent.putExtra(Intent.EXTRA_SUBJECT,"Demo of Implicit Intent");
+objIntent.putExtra(Intent.EXTRA_TEXT,"Hello...Good Morning");
+objIntent.setType("message/rfc822");
+startActivity(objIntent);*/
+//Another way of sending Email with ACTION_SENDTO
+Intent objIntent = new Intent(Intent.ACTION_SENDTO);
+objIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"jigna.solanki@utu.ac.in"});
+
+
+objIntent.putExtra(Intent.EXTRA_SUBJECT,"Demo of Implicit Intent");
+objIntent.putExtra(Intent.EXTRA_TEXT,"Hello...Good Morning");
+objIntent.setData(Uri.parse("mailto:"));
+startActivity(objIntent);
+}
+});
+btnCheckLogin.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+Intent objIntent = new Intent(getApplicationContext(), LoginActivity.class);
+startActivityForResult(objIntent,1);
+}
+});
+}
+@Override
+protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+super.onActivityResult(requestCode, resultCode, data);
+if(requestCode == 1)
+{
+if(resultCode == RESULT_OK)
+{
+String Name = data.getStringExtra("Username");
+String pswd = data.getStringExtra("password");
+lblUserName.setText("User NAme is : " + Name + " Password is : " + pswd);
+}
+}
+}
 }
