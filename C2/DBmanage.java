@@ -1,0 +1,81 @@
+package com.example.cie2;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+
+public class DBmanage {
+
+    // Step - 1 :- # vastu leavni
+    private  DBhelper helper;
+    private Context context;
+    private SQLiteDatabase db;
+
+    // Step - 2 :- create Context class constructor name short karvanu c lakhi devanu
+    public DBmanage(Context c) {
+        this.context = c;
+    }
+
+    //Step - 3 :- Have Open method banavi . helper and db ne initialize karva
+
+    public DBmanage open() throws SQLException {
+        helper = new DBhelper(context);
+        db = helper.getWritableDatabase();
+        return this;
+    }
+
+    //Step - 4 :- Have CLose method banavi .
+
+    public void close(){
+        helper.close();
+    }
+
+    //Step - 5 :- Have Insert Karvanu.
+
+    public long AddEmp(String  Empname , String Pass){
+        ContentValues cv = new ContentValues();
+        cv.put(helper.ename,Empname);
+        cv.put(helper.pass,Pass);
+
+        long i = db.insert(helper.tblname,null,cv);
+        return i;
+    }
+
+    //Step - 6 :- Retrieve List Of emp
+    public Cursor GetEmplist(){
+        Cursor c = db.query(helper.tblname,null,null,null,null,null,null);
+        return c;
+    }
+    // step - 7(1):- activity ma jai ne aakhu copy karvanu ne button ne reva devanu
+                    // pachi java ni undar na folder ma layout banavu add emp nu
+
+
+
+    //Step - 7 :- delete
+    public void Delete(int EmpId)
+    {
+        db.delete(helper.tblname,helper.eid + "=?" ,
+         new String[]{
+                 String.valueOf(EmpId)
+         });
+    }
+
+    //Step - 8 :- Update
+    public int Update(int Empid , String Empname , String Pass)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(helper.ename , Empname);
+        cv.put(helper.pass, Pass);
+
+        int i = db.update(helper.tblname,cv,helper.eid  + "=?",
+                new String[]{
+                        String.valueOf(Empid)
+                });
+        return i;
+    }
+
+}
+
+// Step - 9 :- Have
