@@ -1,0 +1,48 @@
+package com.example.cie2;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+//Step - 1 :- extends SQLiteOpenHelper
+public class DBhelper extends SQLiteOpenHelper {
+
+    //Step - 3 :- create database
+    private static final String dbname = "test_cie.db";
+    private static final int version = 1;
+    //Step - 4 :- create table
+    public static final String tblname = "tbl_emp";
+    public static final String eid = "_id";
+    public static final String ename = "ename";
+    public static final String pass = "pass";
+
+    //Step - 5 :- tbl query
+    private static final String create_table = "CREATE TABLE " + tblname +
+            "( " +
+            eid + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+            ename + " TEXT NOT NULL ," +
+            pass + " TEXT NOT NULL "  +
+            " ); ";
+
+    //Step - 2 :- Context Sivai nu all remove
+    public DBhelper(@Nullable Context context ) {
+        super(context, dbname, null, version);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+    //Step - 6 :-  (change name db first)
+        db.execSQL(create_table); // tbl banse
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        //Step - 7 :- pela thi table hase to delete karva and database ne update karva
+    db.execSQL(" DROP TABLE IF EXISTS " + tblname );
+    }
+}
+
+// Step - 8 :- have aa ne ban kari managaer banavo class
+

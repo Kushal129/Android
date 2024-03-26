@@ -1,9 +1,11 @@
-package com.example.cie2;
+import java.sql.SQLException;
+
+import javax.naming.Context;
+
+import com.example.cie2.DBhelper;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DBmanage {
