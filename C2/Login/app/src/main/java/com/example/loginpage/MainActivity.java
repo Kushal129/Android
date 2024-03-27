@@ -13,8 +13,10 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText email , password;
-    private Button btn_login;
+    EditText email , password;
+    Button btn_login;
+    String useremail,userpass;
+
 
     private  DBhelper dBhelper;
     @Override
@@ -27,41 +29,43 @@ public class MainActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         dBhelper = new DBhelper(this);
 
-
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email  = email.getText().toString().trim();
-                String pass = password.getText().toString();
+                 useremail  = email.getText().toString().trim();
+                 userpass = password.getText().toString();
 
-                if (validateInput(email, password)) {
-                    loginUser(email, password);
+                if (validateInput( useremail,userpass)) {
+                    loginUser(useremail, userpass);
                 }
             }
         });
     }
 
-    private void loginUser(EditText email, EditText password) {
+    private void loginUser(String iemail, String ipassword) {
         SQLiteDatabase db = dBhelper.getReadableDatabase();
 
         String[] colums = {dBhelper.eid};
         String selection = dBhelper.ename + " = ? " +
                 " AND " + dBhelper.pass + " = ? ";
 
-        String[] selectionArgs = {email , password};
+        String[] selectionArgs = {iemail , ipassword};
         Cursor cursor = db.query(dBhelper.tblname ,colums ,selection ,selectionArgs ,null , null , null);
         if (cursor.getCount() > 0) {
             // Login successful, redirect to welcome page
             Intent welcomeIntent = new Intent(MainActivity.this,welcomeactivity.class);
             startActivity(welcomeIntent);
         } else {
+            Intent welcomeIntent = new Intent(MainActivity.this,welcomeactivity.class);
+            startActivity(welcomeIntent);
             // Login failed, display error message
             Toast.makeText(MainActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
     }
 
-    private boolean validateInput(EditText email, EditText password) {
+    private boolean validateInput(String email, String password) {
+
         return true;
     }
 }
