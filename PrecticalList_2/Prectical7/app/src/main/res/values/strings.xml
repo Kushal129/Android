@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">129_Prectical7</string>
+    <string-array name="country">
+        <item>Select Country</item>
+        <item>INDIA</item>
+        <item>RUSSIA</item>
+        <item>UK</item>
+        <item>GERMANY</item>
+        <item>USA</item>
+        <item>CANADA</item>
+    </string-array>
+
+</resources>
