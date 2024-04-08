@@ -30,26 +30,17 @@ public class MainActivity extends AppCompatActivity {
         rgCourse = findViewById(R.id.rgCourse);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View v) {
-                                             int selectedId = rgCourse.getCheckedRadioButtonId();
-                                             if (selectedId != -1) {
-                                                 RadioButton selectedRadioButton =
-                                                         findViewById(selectedId);
-                                                 String selectedCourse =
-                                                         selectedRadioButton.getText().toString();
-                                                 Toast.makeText(MainActivity.this, "Selected Course: " +
-                                                         selectedCourse, Toast.LENGTH_SHORT).show();
-
-
-                                             } else {
-                                                 Toast.makeText(MainActivity.this, "Please select a course",
-                                                         Toast.LENGTH_SHORT).show();
-                                             }
-                                         }
-                                     }
-        )
-        ;
-
+            @Override
+            public void onClick(View v) {
+                int selectedId = rgCourse.getCheckedRadioButtonId();
+                if (selectedId != -1) {
+                    RadioButton selectedRadioButton = findViewById(selectedId);
+                    String selectedCourse = selectedRadioButton.getText().toString();
+                    Toast.makeText(MainActivity.this, "Selected Course: " + selectedCourse, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Please select a course", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

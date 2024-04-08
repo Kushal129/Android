@@ -33,26 +33,25 @@ public class MainActivity extends AppCompatActivity {
         windowsCheckbox = findViewById(R.id.windowsCheckbox);
         submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        StringBuilder selectedOptions = new
-                                                                StringBuilder("Selected Options: ");
-                                                        if (iphoneCheckbox.isChecked()) {
-                                                            selectedOptions.append("iPhone, ");
-                                                        }
-                                                        if (androidCheckbox.isChecked()) {
-                                                            selectedOptions.append("Android, ");
-                                                        }
-                                                        if (windowsCheckbox.isChecked()) {
-                                                            selectedOptions.append("Windows, ");
-                                                        }
-                                                        String result = selectedOptions.toString().trim();
-                                                        if (result.endsWith(",")) {
-                                                            result = result.substring(0, result.length() - 1);
-                                                        }
-                                                        Toast.makeText(MainActivity.this, result,
-                                                                Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
+            @Override
+            public void onClick(View v) {
+                StringBuilder selectedOptions = new StringBuilder("Selected Options: ");
+                if (iphoneCheckbox.isChecked()) {
+                    selectedOptions.append("iPhone, ");
+                }
+                if (androidCheckbox.isChecked()) {
+                    selectedOptions.append("Android, ");
+                }
+                if (windowsCheckbox.isChecked()) {
+                    selectedOptions.append("Windows, ");
+                }
+                String result = selectedOptions.toString().trim();
+                if (result.endsWith(","))
+                {
+                    result = result.substring(0, result.length() - 1);
+                }
+                Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
