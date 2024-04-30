@@ -1,0 +1,196 @@
+<========= MainActivity =========>
+<LinearLayout >
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Register"
+        android:onClick="onRegisterClick" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Login"
+        android:onClick="onLoginClick" />
+</LinearLayout>
+
+<========= MainActivity java =========>
+
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    public void onRegisterClick(View view) {
+        startActivity(new Intent(this, RegisterActivity.class));
+    }
+
+    public void onLoginClick(View view) {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+}
+
+<========= LoginActivity  =========>
+
+
+<LinearLayout >
+
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="101dp"
+        android:hint="Username"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Login"
+        android:onClick="onLoginClick" />
+
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="invisible" />
+
+</LinearLayout>
+
+
+<========= LoginActivity JAVA =========>
+
+
+public class LoginActivity extends AppCompatActivity {
+
+    private DBHelper dbHelper;
+    private TextView errorTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.login_activity);
+
+        dbHelper = new DBHelper(this);
+    }
+
+    public void onLoginClick(View view) {
+        EditText usernameEditText = findViewById(R.id.usernameEditText);
+        EditText passwordEditText = findViewById(R.id.passwordEditText);
+        TextView errorTextView = findViewById(R.id.errorTextView);
+
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            errorTextView.setText("Please enter both username and password");
+            errorTextView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        if (username.equals("admin") && password.equals("admin123")) {
+            startActivity(new Intent(this, AdminActivity.class));
+            return;
+        }
+
+
+        Cursor cursor = dbHelper.getUserByUsernamePassword(username, password);
+
+        if (cursor.moveToFirst()) {
+
+            startActivity(new Intent(this, UserActivity.class));
+        } else {
+
+            errorTextView.setText("Incorrect username or password");
+            errorTextView.setVisibility(View.VISIBLE);
+        }
+
+        cursor.close();
+    }
+}
+
+
+
+<========= RegisterActivity  =========>
+
+<LinearLayout >
+
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="101dp"
+        android:hint="Username"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Register"
+        android:onClick="onRegisterClick" />
+
+</LinearLayout>
+
+
+<========= RegisterActivity JAVA =========>
+
+
+public class RegisterActivity extends AppCompatActivity {
+
+    private DBHelper dbHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.register_activity);
+
+        dbHelper = new DBHelper(this);
+    }
+
+    public void onRegisterClick(View view) {
+        EditText usernameEditText = findViewById(R.id.usernameEditText);
+        EditText passwordEditText = findViewById(R.id.passwordEditText);
+
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        long id = dbHelper.insertUser(username, password);
+
+        if (id > 0) {
+            Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+}

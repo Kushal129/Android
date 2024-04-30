@@ -1,0 +1,301 @@
+<========= AdminActivity =========>
+
+<LinearLayout >
+
+    <ListView
+        android:id="@+id/userListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+<========= AdminActivity JAVA =========>
+
+public class AdminActivity extends AppCompatActivity {
+
+    private DBHelper dbHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.admin_activity);
+
+        dbHelper = new DBHelper(this);
+
+        ListView userListView = findViewById(R.id.userListView);
+
+        List<String> purchases = getAllPurchases();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, purchases);
+        userListView.setAdapter(adapter);
+    }
+
+    private List<String> getAllPurchases() {
+        List<String> purchases = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DBHelper.TABLE_BUY, new String[]{DBHelper.COLUMN_USERNAME, DBHelper.COLUMN_PRODUCT_NAME}, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            String username = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_USERNAME));
+            String productName = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_PRODUCT_NAME));
+            purchases.add("User: " + username + ", Product: " + productName);
+        }
+
+        cursor.close();
+        db.close();
+        return purchases;
+    }
+}
+
+<========= UserActivity  =========>
+
+<LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:text="Welcome, User!" />
+
+    <ListView
+        android:id="@+id/productListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>
+
+<========= UserActivity JAVA =========>
+
+public class UserActivity extends AppCompatActivity {
+
+    ListView productListView;
+    ArrayList<Product> productList;
+    ProductAdapter productAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.user_activity);
+
+        productListView = findViewById(R.id.productListView);
+        productList = new ArrayList<> ();
+
+
+        productList.add(new Product("ABC", "Nice Product", R.drawable.ic_launcher_background));
+        productList.add(new Product("XYZ", "Good Product", R.drawable.ic_launcher_background));
+        productList.add(new Product("KHK", "Best Product", R.drawable.ic_launcher_background));
+
+
+        productAdapter = new ProductAdapter(this, R.layout.product_item, productList);
+        productListView.setAdapter(productAdapter);
+
+        productListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick( AdapterView<?> parent, View view, int position, long id) {
+
+                Product product = productList.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                builder.setTitle("Buy Product")
+                        .setMessage("Do you want to buy " + product.getName() + "?")
+                        .setPositiveButton("Buy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DBHelper dbHelper = new DBHelper(UserActivity.this);
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                ContentValues values = new ContentValues ();
+                                values.put(DBHelper.COLUMN_USERNAME, "current_username");
+                                values.put(DBHelper.COLUMN_PRODUCT_NAME, product.getName());
+                                db.insert(DBHelper.TABLE_BUY, null, values);
+                                db.close();
+
+                                Toast.makeText(UserActivity.this, "You bought " + product.getName(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+
+                // Return true to consume the long click event
+                return true;
+            }
+        });
+    }
+}
+
+
+<========= product_item  =========>
+
+<LinearLayout >
+
+    <ImageView
+        android:id="@+id/ivProductImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_background"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="Product Name"/>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Description"/>
+    </LinearLayout>
+</LinearLayout>
+
+<========= DBHelper JAVA =========>
+
+public class DBHelper extends SQLiteOpenHelper {
+
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "user_db";
+    static final String TABLE_NAME = "users";
+    private static final String COLUMN_ID = "_id";
+    static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
+
+    static final String TABLE_BUY = "tbl_buy";
+    private static final String BCOLUMN_ID = "_id";
+    static final String BCOLUMN_USERNAME = "username";
+    private static final String BCOLUMN_PASSWORD = "password";
+    static final String COLUMN_PRODUCT_NAME = "product_name";
+
+    public DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USERNAME + " TEXT, " +
+                COLUMN_PASSWORD + " TEXT" +
+                ");");
+
+        db.execSQL("CREATE TABLE " + TABLE_BUY + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USERNAME + " TEXT, " +
+                COLUMN_PRODUCT_NAME + " TEXT" +
+                ");");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+    }
+
+    public long insertUser(String username, String password) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_PASSWORD, password);
+        long id = db.insert(TABLE_NAME, null, values);
+        db.close();
+        return id;
+    }
+
+    public boolean validateUser(String username, String password) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_ID},
+                COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?",
+                new String[]{username, password}, null, null, null);
+
+        boolean isValid = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return isValid;
+    }
+
+    public Cursor getUserByUsernamePassword(String username, String password) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_ID},
+                COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?",
+                new String[]{username, password}, null, null, null);
+        return cursor;
+    }
+}
+
+<========= Product JAVA =========>
+
+public class Product {
+    private String name;
+    private String description;
+    private int imageResource;
+
+    public Product(String name, String description, int imageResource) {
+        this.name = name;
+        this.description = description;
+        this.imageResource = imageResource;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getImageResource() {
+        return imageResource;
+    }
+}
+
+<========= ProductAdapter JAVA =========>
+
+
+public class ProductAdapter extends ArrayAdapter<Product>  {
+    private Context mContext;
+    private int mResource;
+
+    public ProductAdapter(Context context, int resource, ArrayList<Product> products) {
+        super(context, resource, products);
+        mContext = context;
+        mResource = resource;
+    }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        Product product = getItem(position);
+
+
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            convertView = inflater.inflate(mResource, parent, false);
+        }
+
+
+        TextView tvName = convertView.findViewById(R.id.tvName);
+        TextView tvDescription = convertView.findViewById(R.id.tvDescription);
+        ImageView ivProductImage = convertView.findViewById(R.id.ivProductImage);
+
+        tvName.setText(product.getName());
+        tvDescription.setText(product.getDescription());
+        ivProductImage.setImageResource(product.getImageResource());
+
+        return convertView;
+    }
+
+}
+
+
