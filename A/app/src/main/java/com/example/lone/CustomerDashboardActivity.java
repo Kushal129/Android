@@ -10,6 +10,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -17,17 +18,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CustomerDashboardActivity extends AppCompatActivity {
 
-    private EditText editTextLoanType, editTextLoanAmount, editTextLoanTenure,
+    private EditText  editTextLoanAmount, editTextLoanTenure,
             editTextEmail, editTextName, editTextContactNo;
     private Button buttonApplyLoan , buttonLogout;
     private ImageView imageViewLogo;
+
+    private Spinner spinnerLoanType;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_dashboard);
 
-        editTextLoanType = findViewById(R.id.editTextLoanType);
+        spinnerLoanType = findViewById(R.id.spinnerLoanType);
         editTextLoanAmount = findViewById(R.id.editTextLoanAmount);
         editTextLoanTenure = findViewById(R.id.editTextLoanTenure);
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -63,7 +66,7 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         imageViewLogo.startAnimation(rs);
     }
     private void applyLoan() {
-        String loanType = editTextLoanType.getText().toString();
+        String loanType = spinnerLoanType.getSelectedItem().toString();
         String loanAmountStr = editTextLoanAmount.getText().toString();
         String loanTenureStr = editTextLoanTenure.getText().toString();
         String email = editTextEmail.getText().toString();
@@ -83,9 +86,19 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         double monthlyInterestRate = interestRate / 100 / 12;
         double emi = calculateEMI(loanAmount, monthlyInterestRate, loanTenure);
 
-        showConfirmationDialog(emi);
-    }
+        long id = storeLoanApplication(loanType, loanAmount, loanTenure, email, name, contactNo, emi);
 
+        if (id != -1) {
+            showConfirmationDialog(emi);
+            clearInputFields();
+        } else {
+            Toast.makeText(this, "Error into apply loan.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private long storeLoanApplication(String loanType, double loanAmount, int loanTenure, String email, String name, String contactNo, double emi) {
+        Dbhelper dbHelper = new Dbhelper(this);
+        return dbHelper.insertLoanApplication(loanType, loanAmount, loanTenure, email, name, contactNo, emi);
+    }
     private double getInterestRate(String loanType) {
         switch (loanType) {
             case "Home Loan":
@@ -133,7 +146,7 @@ public class CustomerDashboardActivity extends AppCompatActivity {
     }
 
     private void clearInputFields() {
-        editTextLoanType.setText("");
+        spinnerLoanType.setSelection(0);
         editTextLoanAmount.setText("");
         editTextLoanTenure.setText("");
         editTextEmail.setText("");

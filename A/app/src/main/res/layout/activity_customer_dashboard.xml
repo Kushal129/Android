@@ -16,11 +16,12 @@
         android:contentDescription="Logo" />
 
 
-    <EditText
-        android:id="@+id/editTextLoanType"
+    <Spinner
+        android:id="@+id/spinnerLoanType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Loan Type" />
+        android:entries="@array/loan_types"
+        android:prompt="@string/select_loan_type" />
 
     <EditText
         android:id="@+id/editTextLoanAmount"
