@@ -434,3 +434,18 @@ public class AgentDashboardActivity extends AppCompatActivity {
         android:layout_height="wrap_content"
         android:text="Reject" />
 </LinearLayout>
+
+
+
+< ====== val/res ===== >
+
+<resources>
+    <string name="app_name">Lone</string>
+    <string name="select_loan_type">Select Loan Type</string>
+    <string-array name="loan_types">
+        <item>Home Loan</item>
+        <item>Personal Loan</item>
+        <item>Education Loan</item>
+        <item>Car Loan</item>
+    </string-array>
+</resources>
