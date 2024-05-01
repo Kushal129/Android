@@ -1,0 +1,375 @@
+< ============== activity_customer_dashboard  ===============>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".CustomerDashboardActivity" >
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Logo" />
+
+
+    <EditText
+        android:id="@+id/editTextLoanType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loan Type" />
+
+    <EditText
+        android:id="@+id/editTextLoanAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loan Amount" />
+
+    <EditText
+        android:id="@+id/editTextLoanTenure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loan Tenure (in months)" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/editTextContactNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contact No." />
+
+    <Button
+        android:id="@+id/buttonApplyLoan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply for Loan" />
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout" />
+
+</LinearLayout>
+
+< ============== CustomerDashboardActivity  java ===============>
+
+public class CustomerDashboardActivity extends AppCompatActivity {
+
+    private EditText editTextLoanType, editTextLoanAmount, editTextLoanTenure,
+            editTextEmail, editTextName, editTextContactNo;
+    private Button buttonApplyLoan , buttonLogout;
+    private ImageView imageViewLogo;
+
+    @Override
+    protected void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_customer_dashboard);
+
+        editTextLoanType = findViewById(R.id.editTextLoanType);
+        editTextLoanAmount = findViewById(R.id.editTextLoanAmount);
+        editTextLoanTenure = findViewById(R.id.editTextLoanTenure);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextName = findViewById(R.id.editTextName);
+        editTextContactNo = findViewById(R.id.editTextContactNo);
+        buttonApplyLoan = findViewById(R.id.buttonApplyLoan);
+        buttonLogout = findViewById(R.id.buttonLogout);
+        imageViewLogo = findViewById(R.id.imageViewLogo);
+        startLogoAnimation();
+
+        buttonApplyLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                applyLoan();
+            }
+        });
+
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+    }
+
+    private void startLogoAnimation() {
+        RotateAnimation rs = new RotateAnimation (0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        rs.setInterpolator(new LinearInterpolator ());
+        rs.setDuration(2000);
+        rs.setRepeatCount(Animation.INFINITE);
+        imageViewLogo.startAnimation(rs);
+    }
+    private void applyLoan() {
+        String loanType = editTextLoanType.getText().toString();
+        String loanAmountStr = editTextLoanAmount.getText().toString();
+        String loanTenureStr = editTextLoanTenure.getText().toString();
+        String email = editTextEmail.getText().toString();
+        String name = editTextName.getText().toString();
+        String contactNo = editTextContactNo.getText().toString();
+
+        if (loanType.isEmpty() || loanAmountStr.isEmpty() || loanTenureStr.isEmpty() ||
+                email.isEmpty() || name.isEmpty() || contactNo.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double loanAmount = Double.parseDouble(loanAmountStr);
+        int loanTenure = Integer.parseInt(loanTenureStr);
+
+        double interestRate = getInterestRate(loanType);
+        double monthlyInterestRate = interestRate / 100 / 12;
+        double emi = calculateEMI(loanAmount, monthlyInterestRate, loanTenure);
+
+        showConfirmationDialog(emi);
+    }
+
+    private double getInterestRate(String loanType) {
+        switch (loanType) {
+            case "Home Loan":
+                return 9.15;
+            case "Personal Loan":
+                return 14;
+            case "Education Loan":
+                return 11.15;
+            case "Car Loan":
+                return 9.30;
+            default:
+                return 0;
+        }
+    }
+
+    private double calculateEMI(double principal, double monthlyInterestRate, int tenureMonths) {
+        double emi = principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenureMonths) /
+                (Math.pow(1 + monthlyInterestRate, tenureMonths) - 1);
+        return emi;
+    }
+
+    private void showConfirmationDialog(double emi) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Loan Application");
+        builder.setMessage("Your loan EMI will be " + emi + " Rs. Per month. Are you sure you want to proceed?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(CustomerDashboardActivity.this, "Your loan is applied successfully", Toast.LENGTH_SHORT).show();
+                clearInputFields();
+            }
+        });
+
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(CustomerDashboardActivity.this, "Loan application cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void clearInputFields() {
+        editTextLoanType.setText("");
+        editTextLoanAmount.setText("");
+        editTextLoanTenure.setText("");
+        editTextEmail.setText("");
+        editTextName.setText("");
+        editTextContactNo.setText("");
+    }
+
+    private void logout() {
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+}
+
+< ============== activity_agent_dashboard   ===============>
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AgentDashboardActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLoanApplications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
+
+< ============== AgentDashboardActivity  java ===============>
+
+
+public class AgentDashboardActivity extends AppCompatActivity {
+    private RecyclerView recyclerViewLoanApplications;
+    private LoanApplicationsAdapter adapter;
+
+    @Override
+    protected void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_agent_dashboard);
+
+        recyclerViewLoanApplications = findViewById(R.id.recyclerViewLoanApplications);
+        recyclerViewLoanApplications.setLayoutManager(new LinearLayoutManager (this));
+        adapter = new LoanApplicationsAdapter(getLoanApplications());
+        recyclerViewLoanApplications.setAdapter(adapter);
+    }
+
+    private List<LoanApplication> getLoanApplications() {
+
+        List<LoanApplication> applications = new ArrayList<> ();
+        applications.add(new LoanApplication("Customer 1", "Home Loan", 10000));
+        applications.add(new LoanApplication("Customer 2", "Personal Loan", 15000));
+        applications.add(new LoanApplication("Customer 3", "Car Loan", 20000));
+        return applications;
+    }
+
+    private class LoanApplicationsAdapter extends RecyclerView.Adapter<LoanApplicationsAdapter.ViewHolder> {
+
+        private List<LoanApplication> loanApplications;
+
+        public LoanApplicationsAdapter(List<LoanApplication> loanApplications) {
+            this.loanApplications = loanApplications;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loan_application, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            LoanApplication application = loanApplications.get(position);
+            holder.textCustomerName.setText(application.getCustomerName());
+            holder.textLoanType.setText(application.getLoanType());
+            holder.textLoanAmount.setText(String.valueOf(application.getLoanAmount()));
+            holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Implement logic to accept the loan application
+                }
+            });
+            holder.buttonReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Implement logic to reject the loan application
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return loanApplications.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView textCustomerName, textLoanType, textLoanAmount;
+            Button buttonAccept, buttonReject;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                textCustomerName = itemView.findViewById(R.id.textCustomerName);
+                textLoanType = itemView.findViewById(R.id.textLoanType);
+                textLoanAmount = itemView.findViewById(R.id.textLoanAmount);
+                buttonAccept = itemView.findViewById(R.id.buttonAccept);
+                buttonReject = itemView.findViewById(R.id.buttonReject);
+            }
+        }
+    }
+
+    private class LoanApplication {
+        private String customerName;
+        private String loanType;
+        private double loanAmount;
+
+        public LoanApplication(String customerName, String loanType, double loanAmount) {
+            this.customerName = customerName;
+            this.loanType = loanType;
+            this.loanAmount = loanAmount;
+        }
+
+        public String getCustomerName() {
+            return customerName;
+        }
+
+        public String getLoanType() {
+            return loanType;
+        }
+
+        public double getLoanAmount() {
+            return loanAmount;
+        }
+    }
+}
+
+
+< ============== item_loan_application.xml ===============>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textCustomerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Customer Name" />
+
+    <TextView
+        android:id="@+id/textLoanType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Loan Type" />
+
+    <TextView
+        android:id="@+id/textLoanAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Loan Amount" />
+
+    <Button
+        android:id="@+id/buttonAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept" />
+
+    <Button
+        android:id="@+id/buttonReject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reject" />
+</LinearLayout>

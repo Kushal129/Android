@@ -33,8 +33,7 @@ public class AgentDashboardActivity extends AppCompatActivity {
     }
 
     private List<LoanApplication> getLoanApplications() {
-        // Fetch loan applications from database or API
-        // Placeholder data for demonstration
+
         List<LoanApplication> applications = new ArrayList<> ();
         applications.add(new LoanApplication("Customer 1", "Home Loan", 10000));
         applications.add(new LoanApplication("Customer 2", "Personal Loan", 15000));
@@ -66,13 +65,13 @@ public class AgentDashboardActivity extends AppCompatActivity {
             holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Implement logic to accept the loan application
+
                 }
             });
             holder.buttonReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Implement logic to reject the loan application
+
                 }
             });
         }
@@ -97,7 +96,6 @@ public class AgentDashboardActivity extends AppCompatActivity {
         }
     }
 
-    // LoanApplication class to represent each loan application
     private class LoanApplication {
         private String customerName;
         private String loanType;

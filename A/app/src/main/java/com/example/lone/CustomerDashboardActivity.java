@@ -1,10 +1,15 @@
 package com.example.lone;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -14,7 +19,8 @@ public class CustomerDashboardActivity extends AppCompatActivity {
 
     private EditText editTextLoanType, editTextLoanAmount, editTextLoanTenure,
             editTextEmail, editTextName, editTextContactNo;
-    private Button buttonApplyLoan;
+    private Button buttonApplyLoan , buttonLogout;
+    private ImageView imageViewLogo;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -28,6 +34,9 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         editTextContactNo = findViewById(R.id.editTextContactNo);
         buttonApplyLoan = findViewById(R.id.buttonApplyLoan);
+        buttonLogout = findViewById(R.id.buttonLogout);
+        imageViewLogo = findViewById(R.id.imageViewLogo);
+        startLogoAnimation();
 
         buttonApplyLoan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,8 +44,24 @@ public class CustomerDashboardActivity extends AppCompatActivity {
                 applyLoan();
             }
         });
+
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
     }
 
+    private void startLogoAnimation() {
+        RotateAnimation rs = new RotateAnimation (0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        rs.setInterpolator(new LinearInterpolator ());
+        rs.setDuration(2000);
+        rs.setRepeatCount(Animation.INFINITE);
+        imageViewLogo.startAnimation(rs);
+    }
     private void applyLoan() {
         String loanType = editTextLoanType.getText().toString();
         String loanAmountStr = editTextLoanAmount.getText().toString();
@@ -45,7 +70,6 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         String name = editTextName.getText().toString();
         String contactNo = editTextContactNo.getText().toString();
 
-        // Validate input fields
         if (loanType.isEmpty() || loanAmountStr.isEmpty() || loanTenureStr.isEmpty() ||
                 email.isEmpty() || name.isEmpty() || contactNo.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
@@ -55,12 +79,10 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         double loanAmount = Double.parseDouble(loanAmountStr);
         int loanTenure = Integer.parseInt(loanTenureStr);
 
-        // Calculate loan EMI
         double interestRate = getInterestRate(loanType);
         double monthlyInterestRate = interestRate / 100 / 12;
         double emi = calculateEMI(loanAmount, monthlyInterestRate, loanTenure);
 
-        // Display confirmation dialog
         showConfirmationDialog(emi);
     }
 
@@ -93,20 +115,15 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Display Toast message
                 Toast.makeText(CustomerDashboardActivity.this, "Your loan is applied successfully", Toast.LENGTH_SHORT).show();
-
-                // Send notification to customer (Implement notification logic here)
-
-                // Clear input fields if needed
                 clearInputFields();
             }
         });
 
+
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing or show cancellation message
                 Toast.makeText(CustomerDashboardActivity.this, "Loan application cancelled", Toast.LENGTH_SHORT).show();
             }
         });
@@ -122,5 +139,13 @@ public class CustomerDashboardActivity extends AppCompatActivity {
         editTextEmail.setText("");
         editTextName.setText("");
         editTextContactNo.setText("");
+    }
+
+    private void logout() {
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }
