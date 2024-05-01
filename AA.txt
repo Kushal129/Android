@@ -224,6 +224,27 @@ xmlns:tools="http://schemas.android.com/tools"
 < ============== AgentDashboardActivity  java ===============>
 
 
+package com.example.lone;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.lone.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AgentDashboardActivity extends AppCompatActivity {
     private RecyclerView recyclerViewLoanApplications;
     private LoanApplicationsAdapter adapter;
@@ -239,15 +260,25 @@ public class AgentDashboardActivity extends AppCompatActivity {
         recyclerViewLoanApplications.setAdapter(adapter);
     }
 
-    private List<LoanApplication> getLoanApplications() {
+    private List<LoanApplication> getLoanApplicationsFromDatabase() {
+        List<LoanApplication> applications = new ArrayList<>();
+        // Assuming you have a Dbhelper class to handle database operations
+        Dbhelper dbHelper = new Dbhelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        List<LoanApplication> applications = new ArrayList<> ();
-        applications.add(new LoanApplication("Customer 1", "Home Loan", 10000));
-        applications.add(new LoanApplication("Customer 2", "Personal Loan", 15000));
-        applications.add(new LoanApplication("Customer 3", "Car Loan", 20000));
+        Cursor cursor = db.query("loan_applications", null, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String customerName = cursor.getString(cursor.getColumnIndex("customer_name"));
+                String loanType = cursor.getString(cursor.getColumnIndex("loan_type"));
+                double loanAmount = cursor.getDouble(cursor.getColumnIndex("loan_amount"));
+                applications.add(new LoanApplication(customerName, loanType, loanAmount));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
         return applications;
     }
-
     private class LoanApplicationsAdapter extends RecyclerView.Adapter<LoanApplicationsAdapter.ViewHolder> {
 
         private List<LoanApplication> loanApplications;
@@ -272,17 +303,16 @@ public class AgentDashboardActivity extends AppCompatActivity {
             holder.buttonAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Implement logic to accept the loan application
+
                 }
             });
             holder.buttonReject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Implement logic to reject the loan application
+
                 }
             });
         }
-
         @Override
         public int getItemCount() {
             return loanApplications.size();
@@ -327,7 +357,6 @@ public class AgentDashboardActivity extends AppCompatActivity {
         }
     }
 }
-
 
 < ============== item_loan_application.xml ===============>
 
