@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/editTextLoanType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loan Type" />
+
+    <EditText
+        android:id="@+id/editTextLoanAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loan Amount" />
+
+    <EditText
+        android:id="@+id/editTextLoanTenure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loan Tenure (in months)" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/editTextContactNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contact No." />
+
+    <Button
+        android:id="@+id/buttonApplyLoan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply for Loan" />
+</LinearLayout>
